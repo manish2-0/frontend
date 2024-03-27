@@ -11,9 +11,10 @@ import { XMarkIcon } from "@heroicons/react/20/solid";
 import AlertBox from "./AlertBox.jsx";
 import { PriceForm } from "./PriceForm.jsx";
 
-function MultiFormModal({ file, onClose, closeModal }) {
+function MultiFormModal({ file, onClose }) {
   const [mainState, setMainState] = useState({
     loader: true,
+    data: file
   });
 
   const {
@@ -79,6 +80,14 @@ function MultiFormModal({ file, onClose, closeModal }) {
               </div> */}
               <form onSubmit={onSubmit}>
                 <div className="border p-3 md:p-5 relative  w-72  md:h-[600px] md:w-[450px] shadow-2xl rounded-lg bg-white px-5">
+                  {mainState.loader ? (
+                    <div className="absolute  bg-white/30 h-full w-full flex items-center justify-center top-0 left-0">
+                      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 "></div>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+
                   <div className="absolute font-bold text-sm top-0 right-0 p-2 bg-black text-white rounded-lg">
                     {currentStepIndex + 1} / {steps.length}{" "}
                   </div>

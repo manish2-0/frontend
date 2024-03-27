@@ -160,6 +160,13 @@ export function ConditionForm({ mainState, setMainState }) {
       const response = await api.post(`/get-current-value`, payload);
       // setCurrentValue(response?.data?.current_value);
       setPriceData(response.data.data);
+      setMainState({
+        ...mainState,
+        // conditionId: conditionId,
+        amount_z: response.data.data.updated_price,
+        selected_condition: selectedCondition,
+        // condition1: condition1
+      });
     } catch (error) {
       console.error("Error fetching current value:", error);
     }
@@ -180,7 +187,7 @@ export function ConditionForm({ mainState, setMainState }) {
       }
     }
     fetchData();
-    console.log(mainState, "maamamam");
+    console.log(mainState, "second test");
   }, []);
 
   useEffect(() => {
@@ -189,11 +196,13 @@ export function ConditionForm({ mainState, setMainState }) {
     }
   }, [selectedCondition]);
 
-  const handleConditionChange = (conditionId) => {
+  const handleConditionChange = (conditionId, condition1) => {
+    console.log(conditionpriceData, "eededeeded")
     setMainState({
       ...mainState,
       conditionId: conditionId,
       amount: conditionpriceData.updated_price,
+      condition1: condition1
     });
     setSelectedCondition(conditionId);
   };
@@ -220,7 +229,7 @@ export function ConditionForm({ mainState, setMainState }) {
                 required
                 autoFocus
                 className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                onChange={() => handleConditionChange(condition1.condition_id)}
+                onChange={() => handleConditionChange(condition1.condition_id, condition1, condition1.condition_id)}
               />
               <label
                 htmlFor={condition1.condition_id}

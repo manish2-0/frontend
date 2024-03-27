@@ -22,6 +22,7 @@ export function UserForm({ mainState, setMainState }) {
     },
     validationSchema: validationSchema,
     onSubmit: async (event) => {
+      setMainState({ ...mainState, loader: true });
       try {
         let a = formik.values;
         let merged = { ...a, ...mainState };
@@ -31,11 +32,14 @@ export function UserForm({ mainState, setMainState }) {
       } catch (error) {
         console.error("Error submitting form", error.message);
       }
+      finally {
+        setMainState({ ...mainState, loader: false });
+      }
     },
   });
 
   useEffect(() => {
-    console.log(mainState, "sadsf>>>");
+    console.log(mainState, "states at urself");
   }, []);
 
   // Render PriceForm if submitted state is true
@@ -80,11 +84,10 @@ export function UserForm({ mainState, setMainState }) {
               placeholder="Enter a name"
               required
               autoFocus
-              className={`${
-                formik.errors.name && formik.touched.name
-                  ? "border-red-500"
-                  : ""
-              } placeholder:text-sm placeholder:font-normal w-full py-1.5 border-gray-100 text-black text-sm font-normal outline-none ring-1 focus:ring-indigo-600 border rounded px-2`}
+              className={`${formik.errors.name && formik.touched.name
+                ? "border-red-500"
+                : ""
+                } placeholder:text-sm placeholder:font-normal w-full py-1.5 border-gray-100 text-black text-sm font-normal outline-none ring-1 focus:ring-indigo-600 border rounded px-2`}
             />
             {formik.errors.name && formik.touched.name && (
               <p className="text-red-500 text-xs mt-1">{formik.errors.name}</p>
@@ -105,11 +108,10 @@ export function UserForm({ mainState, setMainState }) {
               onBlur={formik.handleBlur}
               placeholder="Enter an email address"
               required
-              className={`${
-                formik.errors.email && formik.touched.email
-                  ? "border-red-500"
-                  : ""
-              } placeholder:text-sm placeholder:font-normal w-full py-1.5 border-gray-100 text-black text-sm font-normal outline-none ring-1 focus:ring-indigo-600 border rounded px-2`}
+              className={`${formik.errors.email && formik.touched.email
+                ? "border-red-500"
+                : ""
+                } placeholder:text-sm placeholder:font-normal w-full py-1.5 border-gray-100 text-black text-sm font-normal outline-none ring-1 focus:ring-indigo-600 border rounded px-2`}
             />
             {formik.errors.email && formik.touched.email && (
               <p className="text-red-500 text-xs mt-1">{formik.errors.email}</p>
@@ -132,11 +134,10 @@ export function UserForm({ mainState, setMainState }) {
               maxLength={10}
               placeholder="Enter a phone number"
               required
-              className={`${
-                formik.errors.phone && formik.touched.phone
-                  ? "border-red-500"
-                  : ""
-              } placeholder:text-sm placeholder:font-normal w-full bg-white border-gray-100 text-black text-sm font-normal outline-none py-1.5 ring-1 focus:ring-indigo-600 border rounded px-2`}
+              className={`${formik.errors.phone && formik.touched.phone
+                ? "border-red-500"
+                : ""
+                } placeholder:text-sm placeholder:font-normal w-full bg-white border-gray-100 text-black text-sm font-normal outline-none py-1.5 ring-1 focus:ring-indigo-600 border rounded px-2`}
             />
             {formik.errors.phone && formik.touched.phone && (
               <p className="text-red-500 text-xs mt-1">{formik.errors.phone}</p>

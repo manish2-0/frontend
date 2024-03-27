@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { InlineWidget } from "react-calendly";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";

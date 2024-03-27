@@ -19,6 +19,7 @@ export function CarrierForm({ mainState, setMainState }) {
       }
     }
     fetchData();
+    // console.log(mainState, "first check")
   }, []);
 
   useEffect(() => {

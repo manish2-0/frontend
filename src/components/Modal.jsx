@@ -74,6 +74,8 @@ const Modal = ({
   }, [showModal]);
 
   const handleFileClick = (file) => {
+
+    console.log(file, "test")
     setSelectedFile(file);
     setMultiFormModalOpen(true);
     setModalOpen(false);
@@ -139,6 +141,7 @@ const Modal = ({
                               handleFileClick({
                                 title: title.device_name,
                                 size: sizes[index],
+                                sendobjj: title
                               })
                             }
                           >
@@ -153,7 +156,7 @@ const Modal = ({
                               <button
                                 type="button"
                                 className="focus:outline-none"
-                                onClick={handleButtonClick}
+                                onClick={() => handleButtonClick()}
                               >
                                 <div className="bg-black font-medium text-sm text-white px-2 py-1 rounded-lg">
                                   Take a look a closer

@@ -104,6 +104,7 @@ export function StorageForm({ mainState, setMainState }) {
 
   async function getCurrentValue() {
     try {
+      setMainState({ ...mainState, loader: true });
       const payload = {
         current_value: 500,
         step: "storage",
@@ -118,10 +119,14 @@ export function StorageForm({ mainState, setMainState }) {
     } catch (error) {
       console.error("Error fetching current value:", error);
     }
+    finally {
+      setMainState({ ...mainState, loader: false });
+    }
   }
 
   useEffect(() => {
     async function fetchData() {
+      setMainState({ ...mainState, loader: true });
       try {
         const response = await api.get(
           `/get-device/mobile/MCaNDFVVD9TC1F4deAZv`
@@ -130,9 +135,12 @@ export function StorageForm({ mainState, setMainState }) {
       } catch (error) {
         console.error("Error fetching storage options:", error);
       }
+      finally {
+        setMainState({ ...mainState, loader: false });
+      }
     }
     fetchData();
-    console.log(mainState, "ashdasj???>>>");
+    console.log(mainState, "at storage");
   }, []);
 
   useEffect(() => {
@@ -141,11 +149,12 @@ export function StorageForm({ mainState, setMainState }) {
     }
   }, [selectedStorage]);
 
-  const handleStorageChange = (storageId) => {
+  const handleStorageChange = (storageId, storage1) => {
     setMainState({
       ...mainState,
       storageId: storageId,
       amount: storagepriceData.updated_price,
+      storage1: storage1
     });
     setSelectedStorage(storageId);
   };
@@ -172,7 +181,7 @@ export function StorageForm({ mainState, setMainState }) {
                 required
                 autoFocus
                 className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                onChange={() => handleStorageChange(storage1.storage_id)}
+                onChange={() => handleStorageChange(storage1.storage_id, storage1)}
               />
               <label
                 htmlFor={storage1.storage_id}
