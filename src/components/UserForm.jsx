@@ -25,8 +25,19 @@ export function UserForm({ mainState, setMainState }) {
       setMainState({ ...mainState, loader: true });
       try {
         let a = formik.values;
+        let newmerged = {
+          user_name: a.name,
+          email_id: a.email,
+          contact_number: a.phone,
+          condition: mainState.data3.condition_details,
+          carrier: mainState.data2,
+          storage: mainState.data4.storage,
+          device_id: mainState.data1.sendobjj.device_id,
+          quoted_price: mainState.data4.amount_from_storage.updated_price,
+          device_name: mainState.data1.sendobjj.device_name
+        }
         let merged = { ...a, ...mainState };
-        const response = await api.post("/submit-form", merged);
+        const response = await api.post("/submit-form", newmerged);
         console.log("Form submitted successfully", response.data);
         setSubmitted(true);
       } catch (error) {
