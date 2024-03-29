@@ -14,7 +14,7 @@ import { PriceForm } from "./PriceForm.jsx";
 function MultiFormModal({ file, onClose }) {
   const [mainState, setMainState] = useState({
     loader: true,
-    data: file
+    data1: file
   });
 
   const {

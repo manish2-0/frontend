@@ -46,7 +46,7 @@ function MultiForm() {
           <div className="md:basis-2/4 ">
             <Steps />
           </div>{" "}
-          <div className="md:basis-2/4 lg:mt-10">
+          {/* <div className="md:basis-2/4 lg:mt-10">
             <div className="flex flex-col  items-center ">
               <div className="flex">
                 <div className="font-bold  md:text-2xl text-gray-500  mt-3 md:mt-10">
@@ -76,14 +76,6 @@ function MultiForm() {
                     {currentStepIndex + 1} / {steps.length}{" "}
                   </div>
                   {step}
-                  {/* <div className="mt-3 text-sm">
-                    {!isSecondLastStep && !isLastStep && (
-                      <span>The current value of the phone:</span>
-                    )}
-                    {!isSecondLastStep && !isLastStep && (
-                      <span>Value</span>
-                    )}
-                  </div> */}
                   <div className="flex mt-[1rem] gap-[1rem] justify-end ">
                     {!isFirstStep && !isSecondLastStep && (
                       <button
@@ -107,7 +99,7 @@ function MultiForm() {
                 </div>
               </form>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

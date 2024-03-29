@@ -147,26 +147,38 @@ export function ConditionForm({ mainState, setMainState }) {
   const [selectedCondition, setSelectedCondition] = useState([]);
   // const [currentValue, setCurrentValue] = useState("");
   const [conditionpriceData, setPriceData] = useState("");
+  const [val1, setval1] = useState(mainState.data2.updated_price);
+
   async function getCurrentValue() {
+    setMainState({
+      ...mainState, loader: true
+    });
     try {
       const payload = {
-        current_value: 500,
-        step: "condition",
+        current_value: mainState.data2.updated_price,
+        step: "conditions",
         step_id: selectedCondition,
-        device_id: "MCaNDFVVD9TC1F4deAZv",
-        device_type: "mobile",
+        device_id: mainState.data1.sendobjj.device_id,
+        device_type: mainState.data1.sendobjj.device_type,
       };
+
 
       const response = await api.post(`/get-current-value`, payload);
       // setCurrentValue(response?.data?.current_value);
-      setPriceData(response.data.data);
-      setMainState({
-        ...mainState,
-        // conditionId: conditionId,
-        amount_z: response.data.data.updated_price,
-        selected_condition: selectedCondition,
-        // condition1: condition1
-      });
+      if (response.data.status) {
+        setPriceData(response.data.data);
+        setval1(response.data.data.updated_price);
+        setMainState({
+          ...mainState,
+          // conditionId: conditionId,
+          loader: false,
+          condition_amount: response.data.data.updated_price,
+          data3_getval: response.data.data
+          // selected_condition: selectedCondition,
+          // condition1: condition1
+        });
+      }
+
     } catch (error) {
       console.error("Error fetching current value:", error);
     }
@@ -177,7 +189,7 @@ export function ConditionForm({ mainState, setMainState }) {
       try {
         setMainState({ ...mainState, loader: true });
         const response = await api.get(
-          `/get-device/mobile/MCaNDFVVD9TC1F4deAZv`
+          `/get-device/mobile/${mainState.data1.sendobjj.device_id}`
         );
         setConditions(response.data.data.conditions);
       } catch (error) {
@@ -200,9 +212,11 @@ export function ConditionForm({ mainState, setMainState }) {
     console.log(conditionpriceData, "eededeeded")
     setMainState({
       ...mainState,
-      conditionId: conditionId,
-      amount: conditionpriceData.updated_price,
-      condition1: condition1
+      data3: {
+        conditionId: conditionId,
+        condition_details: condition1
+      }
+      // amount: conditionpriceData.updated_price,
     });
     setSelectedCondition(conditionId);
   };
@@ -247,7 +261,7 @@ export function ConditionForm({ mainState, setMainState }) {
       <div className="mt-3 text-sm">
         <span>The current value of the phone:</span>
 
-        <span> $ {conditionpriceData && conditionpriceData.updated_price}</span>
+        <span> $ {val1}</span>
       </div>
     </div>
   );

@@ -102,25 +102,31 @@ export function StorageForm({ mainState, setMainState }) {
   // const [currentValue, setCurrentValue] = useState(null);
   const [storagepriceData, setstoragepriceData] = useState("");
 
+  const [val, setval] = useState(mainState.data3_getval.updated_price);
+
   async function getCurrentValue() {
     try {
       setMainState({ ...mainState, loader: true });
       const payload = {
-        current_value: 500,
-        step: "storage",
+        current_value: mainState.data3_getval.updated_price,
+        step: "storages",
         step_id: selectedStorage,
-        device_id: "MCaNDFVVD9TC1F4deAZv",
-        device_type: "mobile",
+        device_id: mainState.data1.sendobjj.device_id,
+        device_type: mainState.data1.sendobjj.device_type
       };
 
       const response = await api.post(`/get-current-value`, payload);
       // setCurrentValue(response?.data?.current_value);
-      setstoragepriceData(response.data.data);
+      if (response.data.status) {
+        setMainState({ ...mainState, loader: false, data4: { ...mainState.data4, amount_from_storage: response.data.data } });
+        setval(response.data.data.updated_price)
+        setstoragepriceData(response.data.data);
+      }
     } catch (error) {
       console.error("Error fetching current value:", error);
     }
     finally {
-      setMainState({ ...mainState, loader: false });
+      // setMainState({ ...mainState, loader: false, data4: { ...mainState.data4, amount: response.data.data } });
     }
   }
 
@@ -129,7 +135,7 @@ export function StorageForm({ mainState, setMainState }) {
       setMainState({ ...mainState, loader: true });
       try {
         const response = await api.get(
-          `/get-device/mobile/MCaNDFVVD9TC1F4deAZv`
+          `/get-device/mobile/${mainState.data1.sendobjj.device_id}`
         );
         setStorageOptions(response.data.data.storages);
       } catch (error) {
@@ -152,9 +158,11 @@ export function StorageForm({ mainState, setMainState }) {
   const handleStorageChange = (storageId, storage1) => {
     setMainState({
       ...mainState,
-      storageId: storageId,
-      amount: storagepriceData.updated_price,
-      storage1: storage1
+      data4: {
+        storageId: storageId,
+        // amount: storagepriceData,
+        storage: storage1
+      }
     });
     setSelectedStorage(storageId);
   };
@@ -195,7 +203,7 @@ export function StorageForm({ mainState, setMainState }) {
         </div>
         <div className="mt-3 text-sm">
           <span>The current value of the phone:</span>
-          <span> ${storagepriceData && storagepriceData.updated_price}</span>
+          <span> ${val}</span>
         </div>
       </fieldset>
     </div>

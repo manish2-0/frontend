@@ -6,6 +6,7 @@ export function CarrierForm({ mainState, setMainState }) {
   const [selectedCarrier, setSelectedCarrier] = useState();
   // const [currentValue, setCurrentValue] = useState("");
   const [carrierpriceData, setPriceData] = useState("");
+  const [val, setval] = useState(mainState.data1.sendobjj.base_price);
 
   useEffect(() => {
     async function fetchData() {
@@ -19,7 +20,7 @@ export function CarrierForm({ mainState, setMainState }) {
       }
     }
     fetchData();
-    // console.log(mainState, "first check")
+    console.log(mainState, "first check")
   }, []);
 
   useEffect(() => {
@@ -27,22 +28,26 @@ export function CarrierForm({ mainState, setMainState }) {
       setMainState({ ...mainState, loader: true });
       try {
         const payload = {
-          current_value: 500,
-          step: "carrier",
+          current_value: mainState.data1.sendobjj.base_price,
+          step: "carriers",
           step_id: carrierId,
-          device_id: "MCaNDFVVD9TC1F4deAZv",
-          device_type: "mobile",
+          device_id: mainState.data1.sendobjj.device_id,
+          device_type: mainState.data1.sendobjj.device_type,
         };
         const response = await api.post(`/get-current-value`, payload);
         // setCurrentValue(response.data.current_value);
         setPriceData(response.data.data);
+        setval(response.data.data.updated_price)
         // setMainState({ updated_price: response.data.data.updated_price });
         setMainState({
           ...mainState,
           loader: false,
-          updated_price: response.data.data.updated_price,
-          carrier_id: carrierId,
-          carrier_name: carrierName,
+          data2: {
+            "respone": response.data.data,
+            "updated_price": response.data.data.updated_price,
+            "carrier_id": carrierId,
+            "carrier_name": carrierName
+          },
         });
       } catch (error) {
         console.error("Error fetching current value:", error);
@@ -94,7 +99,7 @@ export function CarrierForm({ mainState, setMainState }) {
         <div className="mt-3 text-sm">
           <span>The current value of the phone:</span>
 
-          <span> $ {carrierpriceData && carrierpriceData.updated_price}</span>
+          <span> $ {val}</span>
         </div>
         {/* <div className="mt-3 text-sm">
           <span>Previous Price:</span>
